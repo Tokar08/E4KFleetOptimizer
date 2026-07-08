@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace E4KFleetOptimizer.Core.Models
+namespace E4KFleetOptimizer.Core.Models;
+
+public class OptimizationResult
 {
-    internal class OptimizationResult
-    {
-    }
+    public List<UpgradeStep> Steps { get; init; } = [];
+    public int TotalSpent { get; init; }
+    public int RemainingBudget { get; init; }
+    public int TotalPointsGained { get; init; }
+
+    public List<int> FinalFleet { get; init; } = [];
 }
