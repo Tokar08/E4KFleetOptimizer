@@ -1,1 +1,4 @@
-<Solution />
+<Solution>
+  <Project Path="E4KFleetOptimizer.Core/E4KFleetOptimizer.Core.csproj" />
+  <Project Path="E4KFleetOptimizer.WPF/E4KFleetOptimizer.WPF.csproj" />
+</Solution>
