@@ -1,7 +1,5 @@
 ﻿using E4KFleetOptimizer.Core.Data;
 using E4KFleetOptimizer.Core.Models;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace E4KFleetOptimizer.Core.Services;
 
@@ -93,13 +91,13 @@ public class FleetOptimizationService : IFleetOptimizationService
         };
     }
 
-    private List<int> InitializeFleet(List<int> currentShips, int maxIslandSlots)
+    private static List<int> InitializeFleet(List<int> currentShips, int maxIslandSlots)
     {
         int emptySlots = maxIslandSlots - currentShips.Count;
         return currentShips.Concat(new int[emptySlots]).ToList();
     }
 
-    private int FindBestUpgrade(List<int> fleet, Dictionary<int, ShipLevelData> referenceData)
+    private static int FindBestUpgrade(List<int> fleet, Dictionary<int, ShipLevelData> referenceData)
     {
         var bestUpgrade = fleet
             .Select((level, index) => new { Level = level, Index = index })
@@ -118,7 +116,7 @@ public class FleetOptimizationService : IFleetOptimizationService
         return bestUpgrade?.Index ?? -1;
     }
 
-    private List<UpgradeStep> GroupUpgrades(List<(int From, int To, int Cost, int Points)> rawUpgrades)
+    private static List<UpgradeStep> GroupUpgrades(List<(int From, int To, int Cost, int Points)> rawUpgrades)
     {
         return rawUpgrades
             .GroupBy(u => new { u.From, u.To })
