@@ -1,24 +1,36 @@
-﻿using System.Text;
+﻿using E4KFleetOptimizer.WPF.Data;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace E4KFleetOptimizer.WPF
+
+namespace E4KFleetOptimizer.WPF;
+
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-        public MainWindow()
+        InitializeComponent();
+        try
         {
-            InitializeComponent();
+            var provider = new JsonShipDataProvider();
+            var data = provider.GetLevelData().ToList();
+
+
+            string basePath = AppContext.BaseDirectory;
+            string filePath = System.IO.Path.Combine(basePath, "Resources", "ships.json");
+
+            MessageBox.Show(
+                $"Файл успешно считан: \n\nВесь путь:\n{filePath}\n\nЗагружено уровней кораблей: {data.Count}",
+                "Успех",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"Произошла ошибка при чтении:\n{ex.Message}",
+                "Ошибка",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }
