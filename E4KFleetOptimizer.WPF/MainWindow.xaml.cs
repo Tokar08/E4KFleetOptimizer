@@ -1,4 +1,5 @@
 ﻿using E4KFleetOptimizer.WPF.Data;
+using E4KFleetOptimizer.WPF.ViewModels;
 using System.Windows;
 
 
@@ -6,9 +7,10 @@ namespace E4KFleetOptimizer.WPF;
 
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    public MainWindow(MainViewModel viewModel)
     {
         InitializeComponent();
+        DataContext = viewModel;
         try
         {
             var provider = new JsonShipDataProvider();
