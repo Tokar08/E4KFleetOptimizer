@@ -41,4 +41,17 @@ public partial class MainViewModel : ObservableObject
     private void CalculateOptimization()
     {
     }
+
+    [RelayCommand]
+    private void ChangeShipsCount(string amountStr)
+    {
+        if (int.TryParse(amountStr, out int amount))
+        {
+            var newCount = ShipsToAddCount + amount;
+            if (newCount >= 1)
+            {
+                ShipsToAddCount = newCount;
+            }
+        }
+    }
 }
