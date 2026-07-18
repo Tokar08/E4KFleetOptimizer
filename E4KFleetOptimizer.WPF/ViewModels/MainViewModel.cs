@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using E4KFleetOptimizer.Core.Models; 
 using E4KFleetOptimizer.Core.Services;
+using System.Collections.ObjectModel;
 
 namespace E4KFleetOptimizer.WPF.ViewModels;
 
@@ -16,10 +17,20 @@ public partial class MainViewModel : ObservableObject
     private int _maxIslandSlots;
 
     [ObservableProperty]
+    private int _selectedLevel = 1;
+
+    [ObservableProperty]
+    private int _shipsToAddCount = 1;
+
+    [ObservableProperty]
     private OptimizationResult? _calculationResult;
 
     [ObservableProperty]
-    private List<int> _currentShips = new();
+    private string _errorMessage = "";
+
+    public ObservableCollection<int> AvailableLevels { get; } = new(Enumerable.Range(1, 10));
+
+    public ObservableCollection<ShipGroup> CurrentFleet { get; } = new();
 
     public MainViewModel(IFleetOptimizationService optimizationService)
     {
@@ -29,11 +40,5 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void CalculateOptimization()
     {
-        if (Budget <= 0 || MaxIslandSlots <= 0)
-        {
-            return;
-        }
-
-        CalculationResult = _optimizationService.CalculateBestPath(Budget, CurrentShips, MaxIslandSlots);
     }
 }
