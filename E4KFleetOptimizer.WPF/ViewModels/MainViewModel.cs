@@ -54,4 +54,34 @@ public partial class MainViewModel : ObservableObject
             }
         }
     }
+
+
+    [RelayCommand]
+    private void AddToFleet()
+    {
+        var existingGroup = CurrentFleet.FirstOrDefault(g => g.Level == SelectedLevel);
+
+        if (existingGroup != null)
+        {
+            var newCount = existingGroup.Count + ShipsToAddCount;
+            CurrentFleet.Remove(existingGroup);
+            CurrentFleet.Add(new ShipGroup { Level = SelectedLevel, Count = newCount });
+        }
+        else
+        {
+            CurrentFleet.Add(new ShipGroup { Level = SelectedLevel, Count = ShipsToAddCount });
+        }
+
+        ShipsToAddCount = 1;
+    }
+
+
+    [RelayCommand]
+    private void RemoveFromFleet(ShipGroup group) 
+    {
+        if (group != null) 
+        {
+            CurrentFleet.Remove(group);
+        }
+    }
 }
