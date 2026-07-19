@@ -40,6 +40,41 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void CalculateOptimization()
     {
+        ErrorMessage = string.Empty;
+        CalculationResult = null;
+        if (Budget < 0)
+        {
+            ErrorMessage = "Бюджет не может быть отрицательным.";
+            return;
+        }
+
+        if (MaxIslandSlots <= 0)
+        {
+            ErrorMessage = "Для постройки флота нужен хотя бы 1 доступный слот на острове.";
+            return;
+        }
+
+        try
+        {
+            var currentShips = CurrentFleet
+             .SelectMany(g => Enumerable.Repeat(g.Level, g.Count))
+             .ToList();
+
+            var result = _optimizationService.CalculateBestPath(Budget, currentShips, MaxIslandSlots);
+
+            if (result != null)
+            {
+                CalculationResult = result;
+            }
+            else
+            {
+                ErrorMessage = "Сбой: сервис оптимизации не смог сгенерировать результат.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Внутренняя ошибка расчета: {ex.Message}";
+        }
     }
 
     [RelayCommand]
