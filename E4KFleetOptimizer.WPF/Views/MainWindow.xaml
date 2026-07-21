@@ -93,6 +93,7 @@
             <Button Grid.Row="0" Content="РАССЧИТАТЬ ОПТИМИЗАЦИЮ" 
                     Command="{Binding CalculateOptimizationCommand}" 
                     Height="50" FontSize="16" FontWeight="Bold" Background="#FF3D70B2" Foreground="White"/>
+            
 
             <TextBlock Grid.Row="1" Text="{Binding ErrorMessage}" 
                        Foreground="Red" FontWeight="Bold" TextWrapping="Wrap" Margin="0,10,0,0">

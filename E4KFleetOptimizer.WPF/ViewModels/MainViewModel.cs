@@ -1,20 +1,35 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using E4KFleetOptimizer.Core.Models; 
+using E4KFleetOptimizer.Core.Models;
 using E4KFleetOptimizer.Core.Services;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Windows;
 
 namespace E4KFleetOptimizer.WPF.ViewModels;
 
-public partial class MainViewModel : ObservableObject
+public partial class MainViewModel : ObservableValidator
 {
     private readonly IFleetOptimizationService _optimizationService;
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Range(0, int.MaxValue, ErrorMessage = "Бюджет не может быть отрицательным!")]
     private int _budget;
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Range(1, int.MaxValue, ErrorMessage = "Цель по очкам должна быть больше нуля!")]
+    private int _targetPoints;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Range(1, int.MaxValue, ErrorMessage = "Нужен хотя бы 1 доступный слот!")]
     private int _maxIslandSlots;
+
+    [ObservableProperty]
+    private int _selectedTabIndex;
 
     [ObservableProperty]
     private int _selectedLevel = 1;
@@ -37,49 +52,69 @@ public partial class MainViewModel : ObservableObject
         _optimizationService = optimizationService;
     }
 
-    [RelayCommand]
-    private void CalculateOptimization()
+    private List<int> GetCurrentShipsList()
     {
+        return CurrentFleet
+            .SelectMany(g => Enumerable.Repeat(g.Level, g.Count))
+            .ToList();
+    }
+
+    [RelayCommand]
+    private void CalculateByBudget()
+    {
+        ClearErrors();
+        ValidateProperty(Budget, nameof(Budget));
+        ValidateProperty(MaxIslandSlots, nameof(MaxIslandSlots));
+
+        if (GetErrors(nameof(Budget)).Any() || GetErrors(nameof(MaxIslandSlots)).Any())
+            return;
+
         ErrorMessage = string.Empty;
         CalculationResult = null;
-        if (Budget < 0)
-        {
-            ErrorMessage = "Бюджет не может быть отрицательным.";
-            return;
-        }
-
-        if (MaxIslandSlots <= 0)
-        {
-            ErrorMessage = "Для постройки флота нужен хотя бы 1 доступный слот на острове.";
-            return;
-        }
 
         try
         {
-            var currentShips = CurrentFleet
-             .SelectMany(g => Enumerable.Repeat(g.Level, g.Count))
-             .ToList();
+            CalculationResult = _optimizationService.CalculateBestPath(Budget, GetCurrentShipsList(), MaxIslandSlots);
 
-            var result = _optimizationService.CalculateBestPath(Budget, currentShips, MaxIslandSlots);
-
-            if (result != null)
-            {
-                CalculationResult = result;
-            }
-            else
-            {
-                ErrorMessage = "Сбой: сервис оптимизации не смог сгенерировать результат.";
-            }
+            if (CalculationResult == null)
+                ErrorMessage = "Сбой: сервис оптимизации не смог сгенерировать результат!";
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Внутренняя ошибка расчета: {ex.Message}";
+            ErrorMessage = $"Внутренняя ошибка расчета: {ex.Message}!";
+        }
+    }
+
+    [RelayCommand]
+    private void CalculateByTarget()
+    {
+        ClearErrors();
+        ValidateProperty(TargetPoints, nameof(TargetPoints));
+        ValidateProperty(MaxIslandSlots, nameof(MaxIslandSlots));
+
+        if (GetErrors(nameof(TargetPoints)).Any() || GetErrors(nameof(MaxIslandSlots)).Any())
+            return;
+
+        ErrorMessage = string.Empty;
+        CalculationResult = null;
+
+        try
+        {
+            CalculationResult = _optimizationService.CalculateCostForTarget(TargetPoints, GetCurrentShipsList(), MaxIslandSlots);
+
+            if (CalculationResult == null)
+                ErrorMessage = "Сбой: сервис оптимизации не смог сгенерировать результат!";
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Внутренняя ошибка расчета: {ex.Message}!";
         }
     }
 
     [RelayCommand]
     private void ChangeShipsCount(string amountStr)
     {
+        MessageBox.Show(nameof(MainViewModel), "Check", MessageBoxButton.OK);
         if (int.TryParse(amountStr, out int amount))
         {
             var newCount = ShipsToAddCount + amount;
@@ -89,7 +124,6 @@ public partial class MainViewModel : ObservableObject
             }
         }
     }
-
 
     [RelayCommand]
     private void AddToFleet()
@@ -110,11 +144,10 @@ public partial class MainViewModel : ObservableObject
         ShipsToAddCount = 1;
     }
 
-
     [RelayCommand]
-    private void RemoveFromFleet(ShipGroup group) 
+    private void RemoveFromFleet(ShipGroup group)
     {
-        if (group != null) 
+        if (group != null)
         {
             CurrentFleet.Remove(group);
         }
