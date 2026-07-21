@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:E4KFleetOptimizer.WPF"
         mc:Ignorable="d"
-        Title="E4K Fleet Optimizer - Управление кораблями" Height="600" Width="900"
+        Title="E4K Fleet Optimizer - Управление кораблями" Height="650" Width="950"
         WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
@@ -18,9 +18,6 @@
 
             <GroupBox Header="Глобальные параметры" Padding="10">
                 <StackPanel>
-                    <TextBlock Text="Бюджет (аквамарин):" FontWeight="SemiBold"/>
-                    <TextBox Text="{Binding Budget, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15" Padding="2"/>
-
                     <TextBlock Text="Макс. слотов на островах:" FontWeight="SemiBold"/>
                     <TextBox Text="{Binding MaxIslandSlots, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,5" Padding="2"/>
                 </StackPanel>
@@ -90,13 +87,94 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" Content="РАССЧИТАТЬ ОПТИМИЗАЦИЮ" 
-                    Command="{Binding CalculateOptimizationCommand}" 
-                    Height="50" FontSize="16" FontWeight="Bold" Background="#FF3D70B2" Foreground="White"/>
-            
+           <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10">
+
+                <TabItem Header="Оптимизация по бюджету">
+                    <StackPanel Margin="15">
+                        <TextBlock Text="Доступный бюджет (аквамарин):" FontWeight="SemiBold"/>
+                        <TextBox Text="{Binding Budget, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15" Padding="4" FontSize="14"/>
+
+                        <Button Content="РАССЧИТАТЬ ПО БЮДЖЕТУ" 
+                                Command="{Binding CalculateByBudgetCommand}" 
+                                Height="40" FontSize="14" FontWeight="Bold" Background="#FF3D70B2" Foreground="White"/>
+                        
+                        <Border Margin="0,20,0,0" Padding="15" CornerRadius="5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#F0F8FF"/>
+                                    <Setter Property="BorderBrush" Value="#87CEFA"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding BudgetResult}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel>
+                                <TextBlock Text="ИТОГИ РАСПРЕДЕЛЕНИЯ БЮДЖЕТА" FontWeight="Bold" FontSize="15" Foreground="#1A3B66" Margin="0,0,0,10"/>
+                                <TextBlock FontSize="15" Margin="0,0,0,5">
+                                    <Run Text="Потрачено аквамарина: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding BudgetResult.TotalSpent}" FontWeight="Bold" Foreground="#B23D3D"/>
+                                    <Run Text=" акв."/>
+                                </TextBlock>
+                                <TextBlock FontSize="15" Margin="0,0,0,5">
+                                    <Run Text="Остаток бюджета: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding BudgetResult.RemainingBudget}" FontWeight="Bold"/>
+                                    <Run Text=" акв."/>
+                                </TextBlock>
+                                <TextBlock FontSize="15">
+                                    <Run Text="Максимальный прирост очков: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding BudgetResult.TotalPointsGained}" FontWeight="Bold" Foreground="DarkGreen"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="Достижение цели">
+                    <StackPanel Margin="15">
+                        <TextBlock Text="Целевые грузовые очки:" FontWeight="SemiBold"/>
+                        <TextBox Text="{Binding TargetPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15" Padding="4" FontSize="14"/>
+
+                        <Button Content="РАССЧИТАТЬ ДЛЯ ЦЕЛИ" 
+                                Command="{Binding CalculateByTargetCommand}" 
+                                Height="40" FontSize="14" FontWeight="Bold" Background="#FF2E8B57" Foreground="White"/>
+
+                        <Border Margin="0,20,0,0" Padding="15" CornerRadius="5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#F0FFF0"/>
+                                    <Setter Property="BorderBrush" Value="#8FBC8F"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TargetResult}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel>
+                                <TextBlock Text="ИТОГИ ДОСТИЖЕНИЯ ЦЕЛИ" FontWeight="Bold" FontSize="15" Foreground="#164A2D" Margin="0,0,0,10"/>
+                                <TextBlock FontSize="16" Margin="0,0,0,8">
+                                    <Run Text="Необходимо аквамарина: " FontWeight="Bold"/>
+                                    <Run Text="{Binding TargetResult.TotalSpent}" FontWeight="Bold" FontSize="20" Foreground="#D13438"/>
+                                    <Run Text=" акв." FontWeight="Bold"/>
+                                </TextBlock>
+                                <TextBlock FontSize="15">
+                                    <Run Text="Итоговый прирост очков: " FontWeight="SemiBold"/>
+                                    <Run Text="{Binding TargetResult.TotalPointsGained}" FontWeight="Bold" Foreground="DarkGreen"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
 
             <TextBlock Grid.Row="1" Text="{Binding ErrorMessage}" 
-                       Foreground="Red" FontWeight="Bold" TextWrapping="Wrap" Margin="0,10,0,0">
+                       Foreground="Red" FontWeight="Bold" TextWrapping="Wrap" Margin="0,5,0,10">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -111,32 +189,22 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-
-            <GroupBox Grid.Row="2" Header="Результат" Margin="0,10,0,0">
+            
+            
+            <GroupBox Grid.Row="2" Header="Детализация улучшений" Margin="0,5,0,0">
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ActiveResult}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="5">
-
-                        <Border Background="#E8F4F8" BorderBrush="#BBE1ED" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,0,0,15">
-                            <StackPanel>
-                                <TextBlock Text="ОБЩИЕ ИТОГИ" FontWeight="Bold" FontSize="14" Margin="0,0,0,5"/>
-                                <TextBlock>
-                                    <Run Text="Потрачено аквамарина: " FontWeight="SemiBold"/>
-                                    <Run Text="{Binding CalculationResult.TotalSpent}"/>
-                                </TextBlock>
-                                <TextBlock>
-                                    <Run Text="Остаток бюджета: " FontWeight="SemiBold"/>
-                                    <Run Text="{Binding CalculationResult.RemainingBudget}"/>
-                                </TextBlock>
-                                <TextBlock>
-                                    <Run Text="Прирост грузовых очков: " FontWeight="SemiBold"/>
-                                    <Run Text="{Binding CalculationResult.TotalPointsGained}"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-
-                        <TextBlock Text="ШАГИ УЛУЧШЕНИЙ" FontWeight="Bold" FontSize="14" Margin="0,0,0,5"/>
-
-                        <ItemsControl ItemsSource="{Binding CalculationResult.Steps}">
+                        <ItemsControl ItemsSource="{Binding ActiveResult.Steps}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Background="White" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,0,0,8">

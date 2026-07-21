@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using E4KFleetOptimizer.Core.Models;
 using E4KFleetOptimizer.Core.Services;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,7 +23,7 @@ public partial class MainViewModel : ObservableValidator
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Range(1, int.MaxValue, ErrorMessage = "Цель по очкам должна быть больше нуля!")]
-    private int _targetPoints;
+    private int _targetPoints = 100;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -29,6 +31,7 @@ public partial class MainViewModel : ObservableValidator
     private int _maxIslandSlots;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ActiveResult))]
     private int _selectedTabIndex;
 
     [ObservableProperty]
@@ -38,10 +41,17 @@ public partial class MainViewModel : ObservableValidator
     private int _shipsToAddCount = 1;
 
     [ObservableProperty]
-    private OptimizationResult? _calculationResult;
+    [NotifyPropertyChangedFor(nameof(ActiveResult))]
+    private OptimizationResult? _budgetResult;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ActiveResult))]
+    private OptimizationResult? _targetResult;
 
     [ObservableProperty]
     private string _errorMessage = "";
+
+    public OptimizationResult? ActiveResult => SelectedTabIndex == 0 ? BudgetResult : TargetResult;
 
     public ObservableCollection<int> AvailableLevels { get; } = new(Enumerable.Range(1, 10));
 
@@ -70,13 +80,13 @@ public partial class MainViewModel : ObservableValidator
             return;
 
         ErrorMessage = string.Empty;
-        CalculationResult = null;
+        BudgetResult = null;
 
         try
         {
-            CalculationResult = _optimizationService.CalculateBestPath(Budget, GetCurrentShipsList(), MaxIslandSlots);
+            BudgetResult = _optimizationService.CalculateBestPath(Budget, GetCurrentShipsList(), MaxIslandSlots);
 
-            if (CalculationResult == null)
+            if (BudgetResult == null)
                 ErrorMessage = "Сбой: сервис оптимизации не смог сгенерировать результат!";
         }
         catch (Exception ex)
@@ -96,13 +106,13 @@ public partial class MainViewModel : ObservableValidator
             return;
 
         ErrorMessage = string.Empty;
-        CalculationResult = null;
+        TargetResult = null;
 
         try
         {
-            CalculationResult = _optimizationService.CalculateCostForTarget(TargetPoints, GetCurrentShipsList(), MaxIslandSlots);
+            TargetResult = _optimizationService.CalculateCostForTarget(TargetPoints, GetCurrentShipsList(), MaxIslandSlots);
 
-            if (CalculationResult == null)
+            if (TargetResult == null)
                 ErrorMessage = "Сбой: сервис оптимизации не смог сгенерировать результат!";
         }
         catch (Exception ex)
@@ -114,7 +124,6 @@ public partial class MainViewModel : ObservableValidator
     [RelayCommand]
     private void ChangeShipsCount(string amountStr)
     {
-        MessageBox.Show(nameof(MainViewModel), "Check", MessageBoxButton.OK);
         if (int.TryParse(amountStr, out int amount))
         {
             var newCount = ShipsToAddCount + amount;
