@@ -7,7 +7,34 @@
         mc:Ignorable="d"
         Title="E4K Fleet Optimizer - Управление кораблями" Height="650" Width="950"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <Border BorderBrush="#D13438" BorderThickness="2" CornerRadius="2">
+                                <AdornedElementPlaceholder x:Name="customAdorner"/>
+                            </Border>
+                            <TextBlock Text="{Binding [0].ErrorContent}" 
+                                   Foreground="#D13438" 
+                                   FontSize="12" 
+                                   FontWeight="SemiBold"
+                                   Margin="0,2,0,5"
+                                   TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
 
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Background" Value="#FFF5F5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350"/>
@@ -87,17 +114,17 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-           <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10">
+            <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10">
 
                 <TabItem Header="Оптимизация по бюджету">
                     <StackPanel Margin="15">
                         <TextBlock Text="Доступный бюджет (аквамарин):" FontWeight="SemiBold"/>
-                        <TextBox Text="{Binding Budget, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15" Padding="4" FontSize="14"/>
+                        <TextBox Text="{Binding Budget, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" Padding="4" FontSize="14"/>
 
                         <Button Content="РАССЧИТАТЬ ПО БЮДЖЕТУ" 
                                 Command="{Binding CalculateByBudgetCommand}" 
                                 Height="40" FontSize="14" FontWeight="Bold" Background="#FF3D70B2" Foreground="White"/>
-                        
+
                         <Border Margin="0,20,0,0" Padding="15" CornerRadius="5">
                             <Border.Style>
                                 <Style TargetType="Border">
@@ -136,7 +163,7 @@
                 <TabItem Header="Достижение цели">
                     <StackPanel Margin="15">
                         <TextBlock Text="Целевые грузовые очки:" FontWeight="SemiBold"/>
-                        <TextBox Text="{Binding TargetPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15" Padding="4" FontSize="14"/>
+                        <TextBox Text="{Binding TargetPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" Padding="4" FontSize="14"/>
 
                         <Button Content="РАССЧИТАТЬ ДЛЯ ЦЕЛИ" 
                                 Command="{Binding CalculateByTargetCommand}" 
@@ -189,8 +216,8 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-            
-            
+
+
             <GroupBox Grid.Row="2" Header="Детализация улучшений" Margin="0,5,0,0">
                 <GroupBox.Style>
                     <Style TargetType="GroupBox">
