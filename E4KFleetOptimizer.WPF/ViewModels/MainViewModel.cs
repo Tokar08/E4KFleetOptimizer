@@ -2,12 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using E4KFleetOptimizer.Core.Models;
 using E4KFleetOptimizer.Core.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Windows;
 
 namespace E4KFleetOptimizer.WPF.ViewModels;
 

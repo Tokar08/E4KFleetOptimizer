@@ -52,28 +52,19 @@
 
             <GroupBox Header="Добавить корабли в замок" Margin="0,15,0,0" Padding="10">
                 <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <TextBlock Text="Уровень:" FontWeight="SemiBold"/>
+                    <ComboBox ItemsSource="{Binding AvailableLevels}" 
+                              SelectedItem="{Binding SelectedLevel}" 
+                              Margin="0,5,0,15" Padding="2"/>
 
-                        <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                            <TextBlock Text="Уровень:" FontWeight="SemiBold"/>
-                            <ComboBox ItemsSource="{Binding AvailableLevels}" 
-                                      SelectedItem="{Binding SelectedLevel}" 
-                                      Margin="0,5,0,15" Padding="2"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="1" Margin="5,0,0,0">
-                            <TextBlock Text="Количество:" FontWeight="SemiBold"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,5,0,15" HorizontalAlignment="Center">
-                                <Button Content=" - " Command="{Binding ChangeShipsCountCommand}" CommandParameter="-1" Width="30" FontWeight="Bold"/>
-                                <TextBox Text="{Binding ShipsToAddCount, UpdateSourceTrigger=PropertyChanged}" Width="50" TextAlignment="Center" Margin="5,0" IsReadOnly="True" VerticalContentAlignment="Center"/>
-                                <Button Content=" + " Command="{Binding ChangeShipsCountCommand}" CommandParameter="1" Width="30" FontWeight="Bold"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
+                    <TextBlock Text="Количество:" FontWeight="SemiBold"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,15" HorizontalAlignment="Center">
+                        <Button Content="-10" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-10" Width="40" FontWeight="Bold" Margin="0,0,5,0"/>
+                        <Button Content="-1" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-1" Width="40" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ShipsToAddCount, UpdateSourceTrigger=PropertyChanged}" Width="60" TextAlignment="Center" Margin="5,0" IsReadOnly="True" VerticalContentAlignment="Center"/>
+                        <Button Content="+1" Command="{Binding ChangeShipsCountCommand}" CommandParameter="1" Width="40" FontWeight="Bold"/>
+                        <Button Content="+10" Command="{Binding ChangeShipsCountCommand}" CommandParameter="10" Width="40" FontWeight="Bold" Margin="5,0,0,0"/>
+                    </StackPanel>
 
                     <Button Content="ДОБАВИТЬ В ЗАМОК" Command="{Binding AddToFleetCommand}" Height="30" FontWeight="Bold"/>
                 </StackPanel>
