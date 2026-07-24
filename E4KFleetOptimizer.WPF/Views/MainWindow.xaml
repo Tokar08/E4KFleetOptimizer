@@ -6,22 +6,25 @@
         xmlns:local="clr-namespace:E4KFleetOptimizer.WPF"
         mc:Ignorable="d"
         Title="E4K Fleet Optimizer - Управление кораблями" Height="650" Width="950"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource PrimaryBackgroundBrush}"
+        Foreground="{DynamicResource PrimaryTextBrush}">
+
     <Window.Resources>
-        <Style TargetType="TextBox">
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
                         <StackPanel>
-                            <Border BorderBrush="#D13438" BorderThickness="2" CornerRadius="2">
+                            <Border BorderBrush="#FF4B4B" BorderThickness="2" CornerRadius="2">
                                 <AdornedElementPlaceholder x:Name="customAdorner"/>
                             </Border>
                             <TextBlock Text="{Binding [0].ErrorContent}" 
-                                   Foreground="#D13438" 
-                                   FontSize="12" 
-                                   FontWeight="SemiBold"
-                                   Margin="0,2,0,5"
-                                   TextWrapping="Wrap"/>
+                                       Foreground="#FF4B4B" 
+                                       FontSize="12" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,2,0,5"
+                                       TextWrapping="Wrap"/>
                         </StackPanel>
                     </ControlTemplate>
                 </Setter.Value>
@@ -29,12 +32,12 @@
 
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
-                    <Setter Property="Background" Value="#FFF5F5"/>
+                    <Setter Property="Background" Value="#3F1D1D"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    
+
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350"/>
@@ -46,7 +49,7 @@
             <GroupBox Header="Глобальные параметры" Padding="10">
                 <StackPanel>
                     <TextBlock Text="Макс. слотов на островах:" FontWeight="SemiBold"/>
-                    <TextBox Text="{Binding MaxIslandSlots, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,5" Padding="2"/>
+                    <TextBox Text="{Binding MaxIslandSlots, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10"/>
                 </StackPanel>
             </GroupBox>
 
@@ -55,15 +58,15 @@
                     <TextBlock Text="Уровень:" FontWeight="SemiBold"/>
                     <ComboBox ItemsSource="{Binding AvailableLevels}" 
                               SelectedItem="{Binding SelectedLevel}" 
-                              Margin="0,5,0,15" Padding="2"/>
+                              Margin="0,5,0,15"/>
 
                     <TextBlock Text="Количество:" FontWeight="SemiBold"/>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,15" HorizontalAlignment="Center">
-                        <Button Content="-10" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-10" Width="40" FontWeight="Bold" Margin="0,0,5,0"/>
-                        <Button Content="-1" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-1" Width="40" FontWeight="Bold"/>
+                        <Button Content="-10" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-10" Width="45" FontWeight="Bold" Margin="0,0,5,0"/>
+                        <Button Content="-1" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-1" Width="45" FontWeight="Bold"/>
                         <TextBox Text="{Binding ShipsToAddCount, UpdateSourceTrigger=PropertyChanged}" Width="60" TextAlignment="Center" Margin="5,0" IsReadOnly="True" VerticalContentAlignment="Center"/>
-                        <Button Content="+1" Command="{Binding ChangeShipsCountCommand}" CommandParameter="1" Width="40" FontWeight="Bold"/>
-                        <Button Content="+10" Command="{Binding ChangeShipsCountCommand}" CommandParameter="10" Width="40" FontWeight="Bold" Margin="5,0,0,0"/>
+                        <Button Content="+1" Command="{Binding ChangeShipsCountCommand}" CommandParameter="1" Width="45" FontWeight="Bold"/>
+                        <Button Content="+10" Command="{Binding ChangeShipsCountCommand}" CommandParameter="10" Width="45" FontWeight="Bold" Margin="5,0,0,0"/>
                     </StackPanel>
 
                     <Button Content="ДОБАВИТЬ В ЗАМОК" Command="{Binding AddToFleetCommand}" Height="30" FontWeight="Bold"/>
@@ -71,7 +74,7 @@
             </GroupBox>
 
             <GroupBox Header="Корабли в замке" Margin="0,15,0,0" Padding="5" Height="220">
-                <ListBox ItemsSource="{Binding CurrentFleet}" HorizontalContentAlignment="Stretch">
+                <ListBox ItemsSource="{Binding CurrentFleet}" HorizontalContentAlignment="Stretch" BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,2">
@@ -90,7 +93,7 @@
                                 <Button Grid.Column="1" Content="Удалить" 
                                         Command="{Binding DataContext.RemoveFromFleetCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
                                         CommandParameter="{Binding}" 
-                                        Padding="10,2" Foreground="DarkRed"/>
+                                        Padding="10,2" Background="Transparent" Foreground="#F87171"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -110,18 +113,15 @@
                 <TabItem Header="Оптимизация по бюджету">
                     <StackPanel Margin="15">
                         <TextBlock Text="Доступный бюджет (аквамарин):" FontWeight="SemiBold"/>
-                        <TextBox Text="{Binding Budget, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" Padding="4" FontSize="14"/>
+                        <TextBox Text="{Binding Budget, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" FontSize="14"/>
 
                         <Button Content="РАССЧИТАТЬ ПО БЮДЖЕТУ" 
                                 Command="{Binding CalculateByBudgetCommand}" 
-                                Height="40" FontSize="14" FontWeight="Bold" Background="#FF3D70B2" Foreground="White"/>
+                                Height="40" FontSize="14" FontWeight="Bold"/>
 
-                        <Border Margin="0,20,0,0" Padding="15" CornerRadius="5">
+                        <Border Margin="0,20,0,0" Padding="15" CornerRadius="5" Background="{DynamicResource SecondaryBackgroundBrush}" BorderBrush="{DynamicResource SecondaryTextBrush}" BorderThickness="1">
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="Background" Value="#F0F8FF"/>
-                                    <Setter Property="BorderBrush" Value="#87CEFA"/>
-                                    <Setter Property="BorderThickness" Value="1"/>
                                     <Setter Property="Visibility" Value="Visible"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding BudgetResult}" Value="{x:Null}">
@@ -131,10 +131,10 @@
                                 </Style>
                             </Border.Style>
                             <StackPanel>
-                                <TextBlock Text="ИТОГИ РАСПРЕДЕЛЕНИЯ БЮДЖЕТА" FontWeight="Bold" FontSize="15" Foreground="#1A3B66" Margin="0,0,0,10"/>
+                                <TextBlock Text="ИТОГИ РАСПРЕДЕЛЕНИЯ БЮДЖЕТА" FontWeight="Bold" FontSize="15" Margin="0,0,0,10"/>
                                 <TextBlock FontSize="15" Margin="0,0,0,5">
                                     <Run Text="Потрачено аквамарина: " FontWeight="SemiBold"/>
-                                    <Run Text="{Binding BudgetResult.TotalSpent}" FontWeight="Bold" Foreground="#B23D3D"/>
+                                    <Run Text="{Binding BudgetResult.TotalSpent}" FontWeight="Bold" Foreground="#F87171"/>
                                     <Run Text=" акв."/>
                                 </TextBlock>
                                 <TextBlock FontSize="15" Margin="0,0,0,5">
@@ -144,7 +144,7 @@
                                 </TextBlock>
                                 <TextBlock FontSize="15">
                                     <Run Text="Максимальный прирост очков: " FontWeight="SemiBold"/>
-                                    <Run Text="{Binding BudgetResult.TotalPointsGained}" FontWeight="Bold" Foreground="DarkGreen"/>
+                                    <Run Text="{Binding BudgetResult.TotalPointsGained}" FontWeight="Bold" Foreground="{DynamicResource AccentHoverBrush}"/>
                                 </TextBlock>
                             </StackPanel>
                         </Border>
@@ -154,18 +154,15 @@
                 <TabItem Header="Достижение цели">
                     <StackPanel Margin="15">
                         <TextBlock Text="Целевые грузовые очки:" FontWeight="SemiBold"/>
-                        <TextBox Text="{Binding TargetPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" Padding="4" FontSize="14"/>
+                        <TextBox Text="{Binding TargetPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" FontSize="14"/>
 
                         <Button Content="РАССЧИТАТЬ ДЛЯ ЦЕЛИ" 
                                 Command="{Binding CalculateByTargetCommand}" 
-                                Height="40" FontSize="14" FontWeight="Bold" Background="#FF2E8B57" Foreground="White"/>
+                                Height="40" FontSize="14" FontWeight="Bold"/>
 
-                        <Border Margin="0,20,0,0" Padding="15" CornerRadius="5">
+                        <Border Margin="0,20,0,0" Padding="15" CornerRadius="5" Background="{DynamicResource SecondaryBackgroundBrush}" BorderBrush="{DynamicResource SecondaryTextBrush}" BorderThickness="1">
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="Background" Value="#F0FFF0"/>
-                                    <Setter Property="BorderBrush" Value="#8FBC8F"/>
-                                    <Setter Property="BorderThickness" Value="2"/>
                                     <Setter Property="Visibility" Value="Visible"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TargetResult}" Value="{x:Null}">
@@ -175,15 +172,15 @@
                                 </Style>
                             </Border.Style>
                             <StackPanel>
-                                <TextBlock Text="ИТОГИ ДОСТИЖЕНИЯ ЦЕЛИ" FontWeight="Bold" FontSize="15" Foreground="#164A2D" Margin="0,0,0,10"/>
+                                <TextBlock Text="ИТОГИ ДОСТИЖЕНИЯ ЦЕЛИ" FontWeight="Bold" FontSize="15" Margin="0,0,0,10"/>
                                 <TextBlock FontSize="16" Margin="0,0,0,8">
                                     <Run Text="Необходимо аквамарина: " FontWeight="Bold"/>
-                                    <Run Text="{Binding TargetResult.TotalSpent}" FontWeight="Bold" FontSize="20" Foreground="#D13438"/>
+                                    <Run Text="{Binding TargetResult.TotalSpent}" FontWeight="Bold" FontSize="20" Foreground="#F87171"/>
                                     <Run Text=" акв." FontWeight="Bold"/>
                                 </TextBlock>
                                 <TextBlock FontSize="15">
                                     <Run Text="Итоговый прирост очков: " FontWeight="SemiBold"/>
-                                    <Run Text="{Binding TargetResult.TotalPointsGained}" FontWeight="Bold" Foreground="DarkGreen"/>
+                                    <Run Text="{Binding TargetResult.TotalPointsGained}" FontWeight="Bold" Foreground="{DynamicResource AccentHoverBrush}"/>
                                 </TextBlock>
                             </StackPanel>
                         </Border>
@@ -192,7 +189,7 @@
             </TabControl>
 
             <TextBlock Grid.Row="1" Text="{Binding ErrorMessage}" 
-                       Foreground="Red" FontWeight="Bold" TextWrapping="Wrap" Margin="0,5,0,10">
+                       Foreground="#F87171" FontWeight="Bold" TextWrapping="Wrap" Margin="0,5,0,10">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -207,7 +204,6 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-
 
             <GroupBox Grid.Row="2" Header="Детализация улучшений" Margin="0,5,0,0">
                 <GroupBox.Style>
@@ -225,7 +221,7 @@
                         <ItemsControl ItemsSource="{Binding ActiveResult.Steps}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="White" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,0,0,8">
+                                    <Border Background="{DynamicResource PrimaryBackgroundBrush}" BorderBrush="{DynamicResource SecondaryTextBrush}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,0,0,8">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
@@ -240,13 +236,13 @@
                                                     <Run Text=" ➔ "/>
                                                     <Run Text="{Binding ToLevel}"/>
                                                 </TextBlock>
-                                                <TextBlock Foreground="#666666" Margin="0,2,0,0">
+                                                <TextBlock Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,2,0,0">
                                                     <Run Text="Прирост грузовых очков: "/>
-                                                    <Run Text="{Binding TotalPointsGained}" FontWeight="Bold" Foreground="DarkGreen"/>
+                                                    <Run Text="{Binding TotalPointsGained}" FontWeight="Bold" Foreground="{DynamicResource AccentHoverBrush}"/>
                                                 </TextBlock>
                                             </StackPanel>
 
-                                            <TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="#B23D3D">
+                                            <TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="#F87171">
                                                 <Run Text="- "/>
                                                 <Run Text="{Binding TotalCost}"/>
                                                 <Run Text=" акв."/>
