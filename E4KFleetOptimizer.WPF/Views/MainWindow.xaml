@@ -101,6 +101,7 @@
             </GroupBox>
         </StackPanel>
 
+        
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -109,7 +110,6 @@
             </Grid.RowDefinitions>
 
             <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10">
-
                 <TabItem Header="Оптимизация по бюджету">
                     <StackPanel Margin="15">
                         <TextBlock Text="Доступный бюджет (аквамарин):" FontWeight="SemiBold"/>
@@ -188,6 +188,46 @@
                 </TabItem>
             </TabControl>
 
+            <ToggleButton Grid.Row="0" 
+              IsChecked="{Binding IsDarkTheme}"
+              HorizontalAlignment="Right" 
+              VerticalAlignment="Top" 
+              Margin="0,2,10,0"
+              Background="Transparent"
+              BorderThickness="0"
+              Cursor="Hand">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <TextBlock Text="&#xE706;" FontFamily="Segoe Fluent Icons" Foreground="#FFFF57" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border Background="Transparent" Padding="5">
+                                        <ContentPresenter/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock Text="&#xE708;" FontFamily="Segoe Fluent Icons" Foreground="#576DFF" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            
             <TextBlock Grid.Row="1" Text="{Binding ErrorMessage}" 
                        Foreground="#F87171" FontWeight="Bold" TextWrapping="Wrap" Margin="0,5,0,10">
                 <TextBlock.Style>

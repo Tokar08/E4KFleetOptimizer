@@ -4,6 +4,7 @@ using E4KFleetOptimizer.Core.Models;
 using E4KFleetOptimizer.Core.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Windows;
 
 namespace E4KFleetOptimizer.WPF.ViewModels;
 
@@ -43,6 +44,9 @@ public partial class MainViewModel : ObservableValidator
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ActiveResult))]
     private OptimizationResult? _targetResult;
+
+    [ObservableProperty]
+    private bool _isDarkTheme = true;
 
     [ObservableProperty]
     private string _errorMessage = "";
@@ -156,5 +160,17 @@ public partial class MainViewModel : ObservableValidator
         {
             CurrentFleet.Remove(group);
         }
+    }
+
+    partial void OnIsDarkThemeChanged(bool value)
+    {
+        string themeName = value ? "Dark" : "Light";
+
+        var newTheme = new ResourceDictionary
+        {
+            Source = new Uri($"Themes/{themeName}.xaml", UriKind.Relative)
+        };
+
+        Application.Current.Resources.MergedDictionaries[0] = newTheme;
     }
 }
