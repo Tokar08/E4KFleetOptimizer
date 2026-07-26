@@ -12,6 +12,7 @@
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <EventSetter Event="PreviewTextInput" Handler="NumberValidationTextBox"/>
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
@@ -62,11 +63,11 @@
 
                     <TextBlock Text="Количество:" FontWeight="SemiBold"/>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,15" HorizontalAlignment="Center">
-                        <Button Content="-10" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-10" Width="45" FontWeight="Bold" Margin="0,0,5,0"/>
-                        <Button Content="-1" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-1" Width="45" FontWeight="Bold"/>
+                        <Button Content="-10" Style="{StaticResource CircleButtonStyle}" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-10" Margin="0,0,5,0"/>
+                        <Button Content="-1" Style="{StaticResource CircleButtonStyle}" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-1"/>
                         <TextBox Text="{Binding ShipsToAddCount, UpdateSourceTrigger=PropertyChanged}" Width="60" TextAlignment="Center" Margin="5,0" IsReadOnly="True" VerticalContentAlignment="Center"/>
-                        <Button Content="+1" Command="{Binding ChangeShipsCountCommand}" CommandParameter="1" Width="45" FontWeight="Bold"/>
-                        <Button Content="+10" Command="{Binding ChangeShipsCountCommand}" CommandParameter="10" Width="45" FontWeight="Bold" Margin="5,0,0,0"/>
+                        <Button Content="+1" Style="{StaticResource CircleButtonStyle}" Command="{Binding ChangeShipsCountCommand}" CommandParameter="1"/>
+                        <Button Content="+10" Style="{StaticResource CircleButtonStyle}" Command="{Binding ChangeShipsCountCommand}" CommandParameter="10" Margin="5,0,0,0"/>
                     </StackPanel>
 
                     <Button Content="ДОБАВИТЬ В ЗАМОК" Command="{Binding AddToFleetCommand}" Height="30" FontWeight="Bold"/>

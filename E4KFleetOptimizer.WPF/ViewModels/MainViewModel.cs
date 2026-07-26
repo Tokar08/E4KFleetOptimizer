@@ -4,7 +4,9 @@ using E4KFleetOptimizer.Core.Models;
 using E4KFleetOptimizer.Core.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Input;
 
 namespace E4KFleetOptimizer.WPF.ViewModels;
 
@@ -173,4 +175,5 @@ public partial class MainViewModel : ObservableValidator
 
         Application.Current.Resources.MergedDictionaries[0] = newTheme;
     }
+
 }
