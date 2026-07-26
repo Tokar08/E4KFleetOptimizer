@@ -9,6 +9,7 @@ namespace E4KFleetOptimizer.WPF;
 
 public partial class MainWindow : Window
 {
+    private static readonly Regex _numericRegex = new Regex("[^0-9]+", RegexOptions.Compiled);
     public MainWindow(MainViewModel viewModel)
     {
         InitializeComponent();
@@ -17,7 +18,6 @@ public partial class MainWindow : Window
 
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
-        Regex regex = new Regex("[^0-9]+");
-        e.Handled = regex.IsMatch(e.Text);
+        e.Handled = _numericRegex.IsMatch(e.Text);
     }
 }

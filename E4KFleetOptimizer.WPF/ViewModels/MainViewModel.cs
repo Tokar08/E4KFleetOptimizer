@@ -13,6 +13,7 @@ namespace E4KFleetOptimizer.WPF.ViewModels;
 public partial class MainViewModel : ObservableValidator
 {
     private readonly IFleetOptimizationService _optimizationService;
+    private readonly IThemeService _themeService;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -59,9 +60,10 @@ public partial class MainViewModel : ObservableValidator
 
     public ObservableCollection<ShipGroup> CurrentFleet { get; } = new();
 
-    public MainViewModel(IFleetOptimizationService optimizationService)
+    public MainViewModel(IFleetOptimizationService optimizationService, IThemeService themeService)
     {
         _optimizationService = optimizationService;
+        _themeService = themeService;
     }
 
     private List<int> GetCurrentShipsList()
@@ -164,16 +166,6 @@ public partial class MainViewModel : ObservableValidator
         }
     }
 
-    partial void OnIsDarkThemeChanged(bool value)
-    {
-        string themeName = value ? "Dark" : "Light";
-
-        var newTheme = new ResourceDictionary
-        {
-            Source = new Uri($"Themes/{themeName}.xaml", UriKind.Relative)
-        };
-
-        Application.Current.Resources.MergedDictionaries[0] = newTheme;
-    }
+    partial void OnIsDarkThemeChanged(bool value) => _themeService.SetTheme(value);
 
 }

@@ -1,6 +1,7 @@
 ﻿using E4KFleetOptimizer.Core.Data;
 using E4KFleetOptimizer.Core.Services;
 using E4KFleetOptimizer.WPF.Data;
+using E4KFleetOptimizer.WPF.Services;
 using E4KFleetOptimizer.WPF.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
@@ -21,6 +22,7 @@ namespace E4KFleetOptimizer.WPF
             var services = new ServiceCollection();
             services.AddSingleton<IShipDataProvider, JsonShipDataProvider>();
             services.AddSingleton<IFleetOptimizationService, FleetOptimizationService>();
+            services.AddSingleton<IThemeService, WpfThemeService>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainWindow>();
 
