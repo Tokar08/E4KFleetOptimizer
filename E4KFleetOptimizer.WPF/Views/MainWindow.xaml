@@ -12,7 +12,6 @@
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-            <EventSetter Event="PreviewTextInput" Handler="NumberValidationTextBox"/>
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
@@ -91,10 +90,12 @@
                                     <Run Text="{Binding Count, Mode=OneWay}"/>
                                 </TextBlock>
 
-                                <Button Grid.Column="1" Content="Удалить" 
-                                        Command="{Binding DataContext.RemoveFromFleetCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
-                                        CommandParameter="{Binding}" 
-                                        Padding="10,2" Background="Transparent" Foreground="#F87171"/>
+                             
+
+                                <Button Grid.Column="1"
+                                        Style="{StaticResource DeleteIconButtonStyle}" 
+                                        Command="{Binding DataContext.RemoveFromFleetCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                        CommandParameter="{Binding}" />
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
