@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using E4KFleetOptimizer.Core.Data;
 using E4KFleetOptimizer.Core.Models;
 using E4KFleetOptimizer.Core.Services;
 using System.Collections.ObjectModel;
@@ -14,6 +15,7 @@ public partial class MainViewModel : ObservableValidator
 {
     private readonly IFleetOptimizationService _optimizationService;
     private readonly IThemeService _themeService;
+    private readonly IShipReferenceProvider _shipReferenceProvider;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -54,16 +56,21 @@ public partial class MainViewModel : ObservableValidator
     [ObservableProperty]
     private string _errorMessage = "";
 
+    [ObservableProperty]
+    private IEnumerable<ShipLevelReference> _shipReferences;
+
     public OptimizationResult? ActiveResult => SelectedTabIndex == 0 ? BudgetResult : TargetResult;
 
     public ObservableCollection<int> AvailableLevels { get; } = new(Enumerable.Range(1, 10));
 
     public ObservableCollection<ShipGroup> CurrentFleet { get; } = new();
 
-    public MainViewModel(IFleetOptimizationService optimizationService, IThemeService themeService)
+    public MainViewModel(IFleetOptimizationService optimizationService, IThemeService themeService, IShipReferenceProvider shipReferenceProvider)
     {
         _optimizationService = optimizationService;
         _themeService = themeService;
+        _shipReferenceProvider = shipReferenceProvider;
+        LoadShipReferences();
     }
 
     private List<int> GetCurrentShipsList()
@@ -167,5 +174,17 @@ public partial class MainViewModel : ObservableValidator
     }
 
     partial void OnIsDarkThemeChanged(bool value) => _themeService.SetTheme(value);
+
+    private void LoadShipReferences()
+    {
+        try
+        {
+            ShipReferences = _shipReferenceProvider.LoadReferences();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка загрузки справочника кораблей: {ex.Message}";
+        }
+    }
 
 }

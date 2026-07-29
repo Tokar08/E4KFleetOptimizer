@@ -1,7 +1,11 @@
-﻿using E4KFleetOptimizer.Core.Data;
-using E4KFleetOptimizer.Core.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using E4KFleetOptimizer.Core.Data;
+using E4KFleetOptimizer.Core.Models;
 
 namespace E4KFleetOptimizer.WPF.Data;
 
@@ -10,42 +14,41 @@ public class CsvShipReferenceProvider : IShipReferenceProvider
     public IEnumerable<ShipLevelReference> LoadReferences()
     {
         var references = new List<ShipLevelReference>();
-        string basePath = AppContext.BaseDirectory;
-        string filePath = Path.Combine(basePath, "Resources", "ShipDataTable.csv");
+        var filePath = Path.Combine(AppContext.BaseDirectory, "Resources", "ShipDataTable.csv");
 
         if (!File.Exists(filePath))
-        {
             return references;
-        }
 
         var lines = File.ReadAllLines(filePath);
-        var culture = CultureInfo.GetCultureInfo("ru-RU");
+        var culture = new CultureInfo("ru-RU");
 
-        for (int i = 1; i < lines.Length; i++)
+        foreach (var line in lines.Skip(1))
         {
-            var line = lines[i];
-
-            if (string.IsNullOrWhiteSpace(line)) 
+            if (string.IsNullOrWhiteSpace(line))
                 continue;
 
             var parts = line.Split(';');
-            static string CleanNumber(string input) => input.Replace(" ", "").Replace("\u00A0", "");
 
-            try
+            if (parts.Length >= 5)
             {
-                var step = new ShipLevelReference
+                var levelStr = Regex.Replace(parts[1], @"[^\d]", "");
+                var upgradeCostStr = Regex.Replace(parts[2], @"[^\d]", "");
+                var pointsDeltaStr = Regex.Replace(parts[3], @"[^\d]", "");
+                var pricePerPointStr = Regex.Replace(parts[4], @"[^\d,]", "");
+
+                if (int.TryParse(levelStr, out int level) &&
+                    int.TryParse(upgradeCostStr, out int upgradeCost) &&
+                    int.TryParse(pointsDeltaStr, out int pointsDelta) &&
+                    double.TryParse(pricePerPointStr, NumberStyles.Any, culture, out double pricePerPoint))
                 {
-                    Level = int.Parse(parts[1]),
-                    UpgradeCost = int.Parse(CleanNumber(parts[2])),
-                    PointsDelta = int.Parse(CleanNumber(parts[3])),
-                    PricePerPoint = double.Parse(parts[4], culture)
-                };
-
-                references.Add(step);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка парсинга строки {i}: {ex.Message}");
+                    references.Add(new ShipLevelReference
+                    {
+                        Level = level,
+                        UpgradeCost = upgradeCost,
+                        PointsDelta = pointsDelta,
+                        PricePerPoint = pricePerPoint
+                    });
+                }
             }
         }
 

@@ -23,6 +23,7 @@ namespace E4KFleetOptimizer.WPF
             services.AddSingleton<IShipDataProvider, JsonShipDataProvider>();
             services.AddSingleton<IFleetOptimizationService, FleetOptimizationService>();
             services.AddSingleton<IThemeService, WpfThemeService>();
+            services.AddSingleton<IShipReferenceProvider, CsvShipReferenceProvider>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainWindow>();
 

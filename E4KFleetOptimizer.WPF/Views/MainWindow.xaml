@@ -188,6 +188,26 @@
                         </Border>
                     </StackPanel>
                 </TabItem>
+                <TabItem Header="Справочник" IsSelected="True">
+                    <Grid Margin="15">
+                        <DataGrid ItemsSource="{Binding ShipReferences}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Уровень" 
+                                    Binding="{Binding Level}" 
+                                    Width="1.5*" />
+                                <DataGridTextColumn Header="Стоимость" 
+                                    Binding="{Binding UpgradeCost}" 
+                                    Width="1.5*" />
+                                <DataGridTextColumn Header="Прирост (Дельта)" 
+                                    Binding="{Binding PointsDelta}" 
+                                    Width="2*" />
+                                <DataGridTextColumn Header="Цена за 1 очко" 
+                                    Binding="{Binding PricePerPoint, StringFormat={}{0:F2}}" 
+                                    Width="2*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
             </TabControl>
 
             <ToggleButton Grid.Row="0" 
