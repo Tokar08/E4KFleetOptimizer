@@ -213,6 +213,8 @@
         <Setter Property="IsReadOnly" Value="True" />
     </Style>
 
+    
+    
     <Style TargetType="DataGridColumnHeader">
         <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />

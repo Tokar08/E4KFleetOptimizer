@@ -9,12 +9,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\ICO\Aqua ico.ico" />
+    <None Remove="Resources\PNG\icon_aqua.png" />
+    <None Remove="Resources\PNG\icon_cargo.png" />
+    <None Remove="Resources\PNG\icon_island.png" />
+    <None Remove="Resources\PNG\icon_level.png" />
+    <None Remove="Resources\PNG\icon_ship.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\E4KFleetOptimizer.Core\E4KFleetOptimizer.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\ICO\Aqua ico.ico" />
+    <Resource Include="Resources\PNG\icon_aqua.png" />
+    <Resource Include="Resources\PNG\icon_cargo.png" />
+    <Resource Include="Resources\PNG\icon_island.png" />
+    <Resource Include="Resources\PNG\icon_level.png" />
+    <Resource Include="Resources\PNG\icon_ship.png" />
   </ItemGroup>
 
   <ItemGroup>

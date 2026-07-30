@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:E4KFleetOptimizer.WPF"
         mc:Ignorable="d"
-        Title="E4K Fleet Optimizer - Управление кораблями" Height="650" Width="950"
+        Title="E4K Fleet Optimizer - Управление кораблями" Height="650" Width="1050"
+        Icon="/Resources/ICO/Aqua ico.ico"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource PrimaryBackgroundBrush}"
         Foreground="{DynamicResource PrimaryTextBrush}">
@@ -48,19 +49,28 @@
 
             <GroupBox Header="Глобальные параметры" Padding="10">
                 <StackPanel>
-                    <TextBlock Text="Макс. слотов на островах:" FontWeight="SemiBold"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Image Source="/Resources/PNG/icon_island.png" Width="20" Height="20" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <TextBlock Text="Макс. слотов на островах:" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <TextBox Text="{Binding MaxIslandSlots, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10"/>
                 </StackPanel>
             </GroupBox>
 
             <GroupBox Header="Добавить корабли в замок" Margin="0,15,0,0" Padding="10">
                 <StackPanel>
-                    <TextBlock Text="Уровень:" FontWeight="SemiBold"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Image Source="/Resources/PNG/icon_level.png" Width="20" Height="20" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <TextBlock Text="Уровень:" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <ComboBox ItemsSource="{Binding AvailableLevels}" 
                               SelectedItem="{Binding SelectedLevel}" 
                               Margin="0,5,0,15"/>
 
-                    <TextBlock Text="Количество:" FontWeight="SemiBold"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                        <Image Source="/Resources/PNG/icon_ship.png" Width="20" Height="20" Margin="0,2,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <TextBlock Text="Количество:" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,15" HorizontalAlignment="Center">
                         <Button Content="-10" Style="{StaticResource CircleButtonStyle}" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-10" Margin="0,0,5,0"/>
                         <Button Content="-1" Style="{StaticResource CircleButtonStyle}" Command="{Binding ChangeShipsCountCommand}" CommandParameter="-1"/>
@@ -90,8 +100,6 @@
                                     <Run Text="{Binding Count, Mode=OneWay}"/>
                                 </TextBlock>
 
-                             
-
                                 <Button Grid.Column="1"
                                         Style="{StaticResource DeleteIconButtonStyle}" 
                                         Command="{Binding DataContext.RemoveFromFleetCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
@@ -114,7 +122,10 @@
             <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10">
                 <TabItem Header="Оптимизация по бюджету">
                     <StackPanel Margin="15">
-                        <TextBlock Text="Доступный бюджет (аквамарин):" FontWeight="SemiBold"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Source="/Resources/PNG/icon_aqua.png" Width="20" Height="20" Margin="0,2,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <TextBlock Text="Доступный бюджет (аквамарин):" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
                         <TextBox Text="{Binding Budget, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" FontSize="14"/>
 
                         <Button Content="РАССЧИТАТЬ ПО БЮДЖЕТУ" 
@@ -155,7 +166,10 @@
 
                 <TabItem Header="Достижение цели">
                     <StackPanel Margin="15">
-                        <TextBlock Text="Целевые грузовые очки:" FontWeight="SemiBold"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Source="/Resources/PNG/icon_cargo.png" Width="20" Height="20" Margin="0,2,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <TextBlock Text="Целевые грузовые очки:" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
                         <TextBox Text="{Binding TargetPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" FontSize="14"/>
 
                         <Button Content="РАССЧИТАТЬ ДЛЯ ЦЕЛИ" 
@@ -192,18 +206,47 @@
                     <Grid Margin="15">
                         <DataGrid ItemsSource="{Binding ShipReferences}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Уровень" 
-                                    Binding="{Binding Level}" 
-                                    Width="1.5*" />
-                                <DataGridTextColumn Header="Стоимость" 
-                                    Binding="{Binding UpgradeCost}" 
-                                    Width="1.5*" />
-                                <DataGridTextColumn Header="Прирост (Дельта)" 
-                                    Binding="{Binding PointsDelta}" 
-                                    Width="2*" />
-                                <DataGridTextColumn Header="Цена за 1 очко" 
-                                    Binding="{Binding PricePerPoint, StringFormat={}{0:F2}}" 
-                                    Width="2*" />
+                                <DataGridTextColumn Binding="{Binding Level}" Width="1.5*">
+                                    <DataGridTextColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Resources/PNG/icon_level.png" Width="16" Height="16" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                <TextBlock Text="Уровень" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTextColumn.HeaderTemplate>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding UpgradeCost}" Width="1.5*">
+                                    <DataGridTextColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Resources/PNG/icon_aqua.png" Width="16" Height="16" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                <TextBlock Text="Стоимость" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTextColumn.HeaderTemplate>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Binding="{Binding PointsDelta}" Width="1.5*">
+                                    <DataGridTextColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Resources/PNG/icon_cargo.png" Width="16" Height="16" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                <TextBlock Text="Прирост" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTextColumn.HeaderTemplate>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding PricePerPoint, StringFormat={}{0:F2}}" Width="1.5*">
+                                    <DataGridTextColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Resources/PNG/icon_aqua.png" Width="16" Height="16" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                <TextBlock Text="Цена за 1 очко" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTextColumn.HeaderTemplate>
+                                </DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
