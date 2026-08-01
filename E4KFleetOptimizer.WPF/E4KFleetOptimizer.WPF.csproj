@@ -14,6 +14,7 @@
     <None Remove="Resources\PNG\icon_cargo.png" />
     <None Remove="Resources\PNG\icon_island.png" />
     <None Remove="Resources\PNG\icon_level.png" />
+    <None Remove="Resources\PNG\icon_logo.png" />
     <None Remove="Resources\PNG\icon_ship.png" />
   </ItemGroup>
 
@@ -32,6 +33,7 @@
     <Resource Include="Resources\PNG\icon_cargo.png" />
     <Resource Include="Resources\PNG\icon_island.png" />
     <Resource Include="Resources\PNG\icon_level.png" />
+    <Resource Include="Resources\PNG\icon_logo.png" />
     <Resource Include="Resources\PNG\icon_ship.png" />
   </ItemGroup>
 
