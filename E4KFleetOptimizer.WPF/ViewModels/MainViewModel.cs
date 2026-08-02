@@ -19,17 +19,17 @@ public partial class MainViewModel : ObservableValidator
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Range(150, 100_000_000, ErrorMessage = "Бюджет должен быть не менее 150 аквамарина!")]
+    [Range(150, 100_000_000, ErrorMessage = "Значение должно быть от 150 до 100 000 000 аквамарина!")]
     private int _budget = 150;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Range(1, 100_000_000, ErrorMessage = "Цель по очкам должна быть больше нуля!")]
+    [Range(1, 100_000_000, ErrorMessage = "Значение должно быть от 1 до 100 000 000 очков!")]
     private int _targetPoints = 100;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Range(1, 68, ErrorMessage = "Нужен хотя бы 1 доступный слот!")]
+    [Range(1, 68, ErrorMessage = "Количество слотов должно быть от 1 до 68!")]
     private int _maxIslandSlots = 1;
 
     [ObservableProperty]
@@ -138,7 +138,8 @@ public partial class MainViewModel : ObservableValidator
         if (int.TryParse(amountStr, out int amount))
         {
             var newCount = ShipsToAddCount + amount;
-            if (newCount >= 1)
+            int currentTotalShips = CurrentFleet.Sum(g => g.Count);
+            if (newCount >= 1 && (currentTotalShips + newCount - ShipsToAddCount) <= MaxIslandSlots)
             {
                 ShipsToAddCount = newCount;
             }
@@ -148,8 +149,14 @@ public partial class MainViewModel : ObservableValidator
     [RelayCommand]
     private void AddToFleet()
     {
-        var existingGroup = CurrentFleet.FirstOrDefault(g => g.Level == SelectedLevel);
+        int currentTotalShips = CurrentFleet.Sum(g => g.Count);
+        if (currentTotalShips + ShipsToAddCount > MaxIslandSlots)
+        {
+            ErrorMessage = $"Нельзя добавить больше кораблей, чем доступно слотов ({MaxIslandSlots})!";
+            return;
+        }
 
+        var existingGroup = CurrentFleet.FirstOrDefault(g => g.Level == SelectedLevel);
         if (existingGroup != null)
         {
             var newCount = existingGroup.Count + ShipsToAddCount;
