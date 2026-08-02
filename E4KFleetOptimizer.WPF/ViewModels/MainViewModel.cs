@@ -19,18 +19,18 @@ public partial class MainViewModel : ObservableValidator
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Range(0, int.MaxValue, ErrorMessage = "Бюджет не может быть отрицательным!")]
-    private int _budget;
+    [Range(150, 100_000_000, ErrorMessage = "Бюджет должен быть не менее 150 аквамарина!")]
+    private int _budget = 150;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Range(1, int.MaxValue, ErrorMessage = "Цель по очкам должна быть больше нуля!")]
+    [Range(1, 100_000_000, ErrorMessage = "Цель по очкам должна быть больше нуля!")]
     private int _targetPoints = 100;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Range(1, int.MaxValue, ErrorMessage = "Нужен хотя бы 1 доступный слот!")]
-    private int _maxIslandSlots;
+    [Range(1, 68, ErrorMessage = "Нужен хотя бы 1 доступный слот!")]
+    private int _maxIslandSlots = 1;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ActiveResult))]

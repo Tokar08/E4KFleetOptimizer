@@ -37,7 +37,6 @@ public partial class MainWindow : Window
     {
         Clipboard.SetText("ivan.tokar.git@gmail.com");
 
-
         if (sender is Button btn && btn.ToolTip is ToolTip toolTip) 
         {
             toolTip.PlacementTarget = btn;
