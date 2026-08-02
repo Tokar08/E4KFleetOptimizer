@@ -369,6 +369,40 @@
                                     </Grid>
                                 </StackPanel>
                             </GroupBox>
+                            <GroupBox Header="Правовая информация" BorderBrush="{DynamicResource SecondaryTextBrush}" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,15">
+                                <StackPanel Margin="10">
+                                    <Grid Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Style="{StaticResource BulletPointStyle}"/>
+                                        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="14" LineHeight="20">
+                Данное приложение является неофициальным, полностью некоммерческим фанатским инструментом с открытым исходным кодом под лицензией MIT.
+                                        </TextBlock>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Style="{StaticResource BulletPointStyle}"/>
+                                        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="14" LineHeight="20">
+                Автор программы (Tokar08) никак не связан с разработчиками игры. Оригинальные права на вселенную принадлежат 
+                <Hyperlink NavigateUri="https://goodgamestudios.com" RequestNavigate="Hyperlink_RequestNavigate">Goodgame Studios</Hyperlink>
+                и 
+                <Hyperlink NavigateUri="https://www.stillfront.com/en/" RequestNavigate="Hyperlink_RequestNavigate">Stillfront Group</Hyperlink>.
+                                        </TextBlock>
+                                    </Grid>
+
+                                    <Border Background="{DynamicResource ErrorBackgroundBrush}" BorderBrush="{DynamicResource ErrorBrush}" BorderThickness="1" Padding="10" CornerRadius="4">
+                                        <TextBlock TextWrapping="Wrap" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource ErrorBrush}" TextAlignment="Justify">
+                ПРОГРАММА ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ» (AS IS), БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ. АВТОР НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ СБОИ В ИГРЕ, ПОТЕРЮ ДАННЫХ ИЛИ ПРОБЛЕМЫ НА ПК ПОЛЬЗОВАТЕЛЯ.
+                                        </TextBlock>
+                                    </Border>
+                                </StackPanel>
+                            </GroupBox>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
