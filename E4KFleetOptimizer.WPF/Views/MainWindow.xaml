@@ -46,9 +46,14 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="0,0,15,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <GroupBox Header="Глобальные параметры" Padding="10">
+            <GroupBox Grid.Row="0" Header="Глобальные параметры" Padding="10">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                         <Image Source="/Resources/PNG/icon_island.png" Width="20" Height="20" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -58,10 +63,10 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="Добавить корабли в замок" Margin="0,15,0,0" Padding="10">
+            <GroupBox Grid.Row="1" Header="Добавить корабли в замок" Margin="0,15,0,0" Padding="10">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Source="/Resources/PNG/icon_level.png" Width="20" Height="20" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <Image Source="/Resources/PNG/icon_level.png" Width="30" Height="20" Margin="0,0,5,0" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                         <TextBlock Text="Уровень:" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     </StackPanel>
                     <ComboBox ItemsSource="{Binding AvailableLevels}" 
@@ -69,7 +74,7 @@
                               Margin="0,5,0,15"/>
 
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
-                        <Image Source="/Resources/PNG/icon_ship.png" Width="20" Height="20" Margin="0,2,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <Image Source="/Resources/PNG/icon_ship.png" Width="30" Height="20" Margin="0,2,5,0" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                         <TextBlock Text="Количество:" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,15" HorizontalAlignment="Center">
@@ -84,7 +89,7 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="Корабли в замке" Margin="0,15,0,0" Padding="5" Height="220">
+            <GroupBox Grid.Row="2" Header="Корабли в замке" Margin="0,15,0,0" Padding="5">
                 <ListBox ItemsSource="{Binding CurrentFleet}" HorizontalContentAlignment="Stretch" BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -110,21 +115,45 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </GroupBox>
-        </StackPanel>
+        </Grid>
 
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Margin="10,0,0,0">
             <Grid.RowDefinitions>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedTabIndex}" Value="3">
+                                    <Setter Property="Height" Value="*"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                            <Setter Property="Height" Value="*"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedTabIndex}" Value="3">
+                                    <Setter Property="Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
             </Grid.RowDefinitions>
 
             <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10">
                 <TabItem Header="Оптимизация по бюджету">
                     <StackPanel Margin="15">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <Image Source="/Resources/PNG/icon_aqua.png" Width="20" Height="20" Margin="0,2,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="/Resources/PNG/icon_aqua.png" Width="15" Height="15" Margin="0,2,5,0" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                             <TextBlock Text="Доступный бюджет (аквамарин):" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
                         <TextBox Text="{Binding Budget, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" FontSize="14"/>
@@ -168,7 +197,7 @@
                 <TabItem Header="Достижение цели">
                     <StackPanel Margin="15">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <Image Source="/Resources/PNG/icon_cargo.png" Width="20" Height="20" Margin="0,2,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="/Resources/PNG/icon_cargo.png" Width="15" Height="15" Margin="0,2,5,0" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                             <TextBlock Text="Целевые грузовые очки:" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
                         <TextBox Text="{Binding TargetPoints, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,20" FontSize="14"/>
@@ -211,7 +240,7 @@
                                     <DataGridTextColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Source="/Resources/PNG/icon_level.png" Width="16" Height="16" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                <Image Source="/Resources/PNG/icon_level.png" Width="20" Height="15" Margin="0,0,5,0" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                 <TextBlock Text="Уровень" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </DataTemplate>
@@ -253,7 +282,7 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="О программе">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="550">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top" MaxWidth="800">
 
                             <StackPanel.Resources>
